@@ -1,0 +1,184 @@
+
+These quick exercises are simply to show you some of the selection tools available in Sublime text that will increase the effiiency of your workflow.  You will probably realize their value immediately but it will take some discipline and effort to  incorporate them into your workflow.  But, it is worth the effort in the long run.  Once you complete these quick exercises, save and submit the text file.
+
+Quick exercises:
+- In the grid of hexideciaml values below, use the "Column Selection with Mouse" feature to change the enire third column the a column with every value equal to  "0000"
+- In the lyrics below, use the "Quick Add Next" feature to change the first five instances of "the" to "THE".  Then use Column Mouse Selection mentioned above to insert a column of spaces down the middle of the lyrics.
+- In the code below the lyrics, use a Find All operation to change every instance of the variable named "codeWriter" to "codeWriter".  Note that there is a class named CodeWriter that should not be changed - only change the variable.  Hint - select the first instance manually, use CMD-F (being sure that "case sensitive" is selected on the lower left side.  Then click find all to select them all.  Then change them to the new name.
+- For practice, try using the file>open menu item to open a DIRECTORY (instead of just a file).  This comes in very handy when you have a project with many files in the same directory structure.
+
+The grid of hexidecimal values:
+
+504b 0304 0000 0008 0800 55bd 134b df9d
+3ab2 8701 0000 2303 0000 1400 0000 4d45
+5441 2d49 0000 2f4d 414e 4946 4553 542e
+4d46 8d52 0000 dc30 10bd 47ca 7ff0 9156
+b237 cef2 0000 9645 a8da 6a0b 2b0a 5cd1
+c499 645d 0000 8e43 cbbf c741 d05d 9a82
+38ce cc9b 0000 decc 0f30 b2c3 21d0 3bf4
+83b4 a622 0000 6952 9b83 4ced 40ec 90c4
+5c2c f28c 0000 39f7 0801 5bba 7a9c 1a0a
+96dd f325 0000 e7e4 e8ca 8350 48ce ad77
+d643 880c 0000 9f73 4a8a e788 5e82 c68a
+7c87 0720 0000 5a69 fa81 74d6 932b 87e6
+db26 4d7e 0000 b27b 45df c8a0 3e80 937a
+bb26 6f3a 0000 f8bb 46ce 96f3 9a69 ad8f
+ecb6 afb5 0000 b51e 8d0c 8f69 b2d6 4ea1
+4613 3ea7 0000 3441 6a24 17e6 417a 6ba6
+c619 c7a1 0000 cfca ab51 aaf6 b948 1b0d
+6604 45f3 0000 6505 2fe7 580f 46ec 2ad2
+084d 43bc 0000 306d 2243 4596 27d0 1422
+3f05 e425 0000 bc28 bb52 74c7 279c 8bf2
+0c96 5d97 0000 386f 8aff 88fd a433 b7d7
+9b8a ec42 0000 62f1 cbf6 a01d b3be 5fa4
+c9c5 9f80 0000 1f5c 58cd 5e01 d1b4 5ebd
+3393 aedb 0000 9adc f871 987e 6d23 1b0f
+3e3e 5cf0 0000 c916 bd96 c334 60a8 0828
+45dd 3ef1 0000 5e1a 69ad 94fd 0d8d c268
+4f8b 0d0c 0000 d7f8 cbfb 80f5 16c3 0e15
+
+
+
+The lyrics:
+
+Bob Dylan's Dream
+by Bob Dylan
+
+While riding on a  train goin' west
+I fell asleep for  to take my rest
+I dreamed a dream  that made me sad
+Concerning myself  and THE first few friends I had
+With half-damp eye s I stared to THE room
+Where my friends a nd I'd spent many an afternoon
+Where we togeTHEr  weaTHEred many a storm
+Laughin' and singi n' till THE early hours of the morn
+By the old wooden  stove where our hats was hung
+Our words were tol d, our songs were sung
+Where we longed fo r nothin' and were satisfied
+Jokin' and talkin'  about the world outside
+With hungry hearts  through the heat and cold
+We never much thou ght we could get very old
+We thought we coul d sit forever in fun
+But our chances re ally was a million to one
+As easy it was to  tell black from white
+It was all that ea sy to tell wrong from right
+And our choices th ey was few so the thought never hit
+That the one road  we traveled would ever shatter and split 
+How many a year ha s passed and gone?
+Many a gamble has  been lost and won
+And many a road ta ken by many a first friend
+And each one I've  never seen again
+I wish, I wish, I  wish in vain
+That we could sit  simply in that room again
+Ten thousand dolla rs at the drop of a hat
+I'd give it all gl adly if our lives could be like that
+ 
+ 
+
+The code below the lyrics:
+
+import java.io.IOException;
+import java.io.File;
+import java.util.ArrayList;
+import java.lang.Enum;
+
+public class Main {
+
+	public static ArrayList<Parser> allParsers = new ArrayList<Parser>();
+	public static CodeWriter codeEraser;
+	public static String outputFileName = "";
+	public static String[] components = {"", "", ""};
+
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.out.println("From main - Please enter a valid file name with a vm extension or a directory path.");
+			System.exit(0);
+		} else {
+// 			Determine if argument is one file, or whole directory
+			if (args[0].contains("."))  { 
+// 				One file only
+				if (args[0].substring(args[0].indexOf('.'), args[0].indexOf('.')+3).contentEquals(".vm")) /* has .vm at the end */ {
+					outputFileName = args[0].substring(0, args[0].indexOf('.')) + ".asm";
+					try {
+						allParsers.add(new Parser(args[0]));
+					} catch (IOException e) {
+						System.out.println("From main with .vm - Please enter a valid file name with a vm extension or a directory path.");
+						System.exit(0);
+					}
+				}
+			} else { // arg is a directory name
+// 				Read and parse all vm files in directory
+				File folder = new File(args[0]);
+				Parser p;
+				outputFileName = args[0] + "/" + args[0] + ".asm";
+				for (int i = 0; i < folder.listFiles().length; i++) {
+					try {
+						String tempName = folder.listFiles()[i].getName();
+						String pathAndName = args[0] + "/" + folder.listFiles()[i].getName();
+						if (tempName.substring(tempName.length()-3, tempName.length()).contentEquals(".vm")) {
+							p = new Parser(pathAndName);
+							allParsers.add(p);
+						}
+					} catch (IOException e) {
+						System.out.println("From main with path - Please enter a valid file name with a vm extension or a directory path.");
+						System.exit(0);
+					}
+				}
+			}
+//			Construct and open a writer for the output file
+			try {
+				codeEraser = new CodeWriter(outputFileName);
+			} catch (IOException e) {
+				System.out.println("From main - IO Error from constructor call for writer.");
+				System.exit(0);
+			}
+//			Step through all of the input files and write to ouput file
+			codeEraser.writeInit();
+			for (Parser  P:  allParsers) {
+				while (P.hasMoreCommands()) {
+					P.advance();
+//                  This is where we will translate each line
+					if (P.currentLine.contains("//") && (!P.currentLine.isEmpty()) && P.currentLine.indexOf('/') > 0) {
+						P.currentLine = P.currentLine.substring(0, P.currentLine.indexOf('/'));
+					}
+					if (!P.currentLine.isEmpty()) {
+						components = P.currentLine.split(" ");
+						for (int i = 0; i < components.length; i++) {
+							if (!components[i].isEmpty()) {
+								components[i] = components[i].trim();
+							}
+						}
+						if (!components[0].contains("//")) {
+							switch (P.commandType(components[0])) {
+								case C_PUSH:
+								case C_POP:			codeEraser.writePushPop(P, P.commandType(components[0]), components[1], Integer.parseInt(components[2]));
+													break;
+								case C_ARITHMETIC:  codeEraser.writeArithmetic(components[0]);
+													break;
+								case C_LABEL:  		codeEraser.writeLabel(components[1]);
+													break;
+								case C_IF:  		codeEraser.writeIf(components[1]);
+													break;
+								case C_GOTO:  		codeEraser.writeGoto(components[1]);
+													break;
+								case C_FUNCTION:  	codeEraser.writeFunction(components[1], Integer.parseInt(components[2]));
+													break;
+								case C_RETURN:  	codeEraser.writeReturn();
+													break;
+								case C_CALL:  		codeEraser.writeCall(components[1], Integer.parseInt(components[2]));
+													break;
+							}
+						}
+					}
+				}
+			}
+//					Close the writer
+					try {
+						CodeWriter.writer.close();
+					} catch (IOException e) {
+						System.out.println("From main - IO Error from output to writer.");
+						System.exit(0);
+					}
+		}
+	}	
+}
