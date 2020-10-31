@@ -1,2 +1,1 @@
-hi this is kish. 
-hope this works
+Java assignments from CRCP3305
